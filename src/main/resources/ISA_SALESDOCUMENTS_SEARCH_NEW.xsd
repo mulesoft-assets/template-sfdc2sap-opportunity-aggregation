@@ -1,0 +1,1010 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+Mule Anypoint Template
+
+Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0">
+	<xsd:element name="ISA_SALESDOCUMENTS_SEARCH_NEW">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="import" minOccurs="0" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element name="CUSTOMER_NUMBER" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DISTR_CHAN" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DISTR_CHAN_RES" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DIVISION" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DIVISION_RES" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DOCUMENT_DATE" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DOCUMENT_DATE_TO" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DOCUMENT_ID" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>Sales document</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DOCUMENT_STATUS" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>Overall processing status of document</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="DOCUMENT_TYPE" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="MATERIAL" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="MAX_HITS" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="OOB_SCENARIO" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="PARTNER" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="PARVW" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="PURCHASE_ORDER" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="SALES_ORGANIZATION" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="SALES_ORGANIZATION_RES" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="TRANSACTION_GROUP" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="USER" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation />
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="VALID_FROM" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>Document date (date received/sent)</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="VALID_TO" minOccurs="0" maxOccurs="1">
+								<xsd:annotation>
+									<xsd:documentation>Document date (date received/sent)</xsd:documentation>
+								</xsd:annotation>
+								<xsd:complexType>
+									<xsd:simpleContent>
+										<xsd:extension base="xsd:string" />
+									</xsd:simpleContent>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:all>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="export" minOccurs="0" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element name="RETURN" minOccurs="0" maxOccurs="1">
+								<xsd:complexType>
+									<xsd:all>
+										<xsd:element name="TYPE" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message type: S Success, E Error, W Warning, I Info, A Abort</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="CODE" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message code</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="MESSAGE" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message Text</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="LOG_NO" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Application log: log number</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="LOG_MSG_NO" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Application log: Internal message serial number</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="MESSAGE_V1" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message Variable</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="MESSAGE_V2" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message Variable</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="MESSAGE_V3" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message Variable</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+										<xsd:element name="MESSAGE_V4" minOccurs="0" maxOccurs="1">
+											<xsd:annotation>
+												<xsd:documentation>Message Variable</xsd:documentation>
+											</xsd:annotation>
+											<xsd:complexType>
+												<xsd:simpleContent>
+													<xsd:extension base="xsd:string" />
+												</xsd:simpleContent>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:all>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:all>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="tables" minOccurs="0" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element name="DOCUMENT_STATUS_TAB" minOccurs="0" maxOccurs="1">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="SIGN" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Inclusion/exclusion criterion SIGN for range tables</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="OPTION" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Selection operator OPTION for range tables</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="LOW" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Logical Variable</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="HIGH" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Logical Variable</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:integer" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="EXTENSION_IN" minOccurs="0" maxOccurs="1">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="STRUCTURE" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Structure name of BAPI table extension</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART1" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART2" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART3" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART4" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:integer" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="EXTENSION_OUT" minOccurs="0" maxOccurs="1">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="STRUCTURE" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Structure name of BAPI table extension</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART1" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART2" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART3" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VALUEPART4" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Data part of BAPI extension parameter</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:integer" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="STATUS_DATA" minOccurs="0" maxOccurs="1">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="row" minOccurs="0" maxOccurs="unbounded">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="VBELN" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Sales and Distribution Document Number</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="AUART" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Sales Document Type</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="AUDAT" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Document Date (Date Received/Sent)</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="BSTNK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Customer purchase order number</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="BSTKD" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Customer purchase order number</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="DATAB" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Quotation or contract valid from</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="DATBI" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Quotation or contract valid to</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="KUNNR" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Sold-to party</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="MATNR" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Material Number</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="NETWR_AK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Net Value of the Sales Order in Document Currency</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="SPART" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Division</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="STATUS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Status of the document</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VKORG" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Sales Organization</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VTWEG" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Distribution Channel</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="KTEXT" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Search term for product proposal</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="AUGRU" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Order reason (reason for the business transaction)</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="ABGRU" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Reason for rejection of quotations and sales orders</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VBTYP" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>SD document category</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VLAUFZ" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Validity period of contract</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VLAUEZ" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Unit of validity period of contract</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="VKUEGRU" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Reason for Cancellation of Contract</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="WAERK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>SD Document Currency</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="RFSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Reference document header status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="RFGSK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Total reference status of all items</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="LFSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Delivery status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="LFGSK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall delivery status for all items</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="WBSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Total goods movement status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="FKSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Billing status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="FKSAK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Billing status (order-related billing document)</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="BUCHK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Posting Status of Billing Document</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="ABSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall rejection status of all document items</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="GBSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall processing status of document</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="KOSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall picking / putaway status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVALS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Total incompletion status of all items in general</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVVLS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Total incompletion status of all items: Delivery</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVFAS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Total incompletion status of all items: Billing</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVALL" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>General incompletion status of the header</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="PKSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall packing status of all items</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="KOQUK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Status of pick confirmation</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVPAS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Totals incomplete status for all items: packaging</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVPIS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Totals incomplete status for all items: Picking</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="UVWAS" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Total incomplete status of all items: post goods movement</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="DCSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Delay status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="FSSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall billing block status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="LSSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall delivery block status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="SPSTG" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>Overall blocked status</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="PDSTK" minOccurs="0" maxOccurs="1">
+														<xsd:annotation>
+															<xsd:documentation>POD status on header level</xsd:documentation>
+														</xsd:annotation>
+														<xsd:complexType>
+															<xsd:simpleContent>
+																<xsd:extension base="xsd:string" />
+															</xsd:simpleContent>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:integer" use="required" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:all>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
