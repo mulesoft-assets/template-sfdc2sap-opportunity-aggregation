@@ -68,20 +68,16 @@ for (textHeader : payload['TextHeaders']) {
 
 payload = soMap.values();
 ]]></expression-component>
-                <logger message="#[payload]" level="INFO" category="CHUJU" doc:name="Logger"/>
             </processor-chain>
         </enricher>
     </sub-flow>
 
     <sub-flow name="aggregationFlow" doc:name="aggregationFlow">
-        <logger message="#[payload]" level="INFO" category="KEKET" doc:name="Logger"/>
         <custom-transformer class="org.mule.templates.transformers.OpportunityMergerTransformer" doc:name="Custom component to build merged opportunity list"/>
     </sub-flow>
     
     <sub-flow name="formatOutputFlow" doc:name="formatOutputFlow">
-        <logger message="#[payload]" level="INFO" category="CHUMAJ" doc:name="Logger"/>
         <custom-transformer class="org.mule.templates.transformers.SortOpportunityListTransformer" doc:name="Custom component to sort opportunity list"/>
-        <logger message="#[payload]" level="INFO" category="PUCA" doc:name="Logger"/>
         <data-mapper:transform config-ref="map_to_csv" doc:name="transform Collection of Maps to CSV Format"/>
         <object-to-string-transformer doc:name="CSV Output Object to String"/>
     </sub-flow>
