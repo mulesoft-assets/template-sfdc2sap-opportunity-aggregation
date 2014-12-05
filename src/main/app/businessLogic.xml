@@ -6,7 +6,7 @@ xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.5.1" 
+version="EE-3.5.2" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
@@ -39,12 +39,13 @@ This flow should control the direction of the application, and it should be call
         <enricher source="#[payload]" target="#[flowVars['salesOrdersFromSap']]" doc:name="Store result in FlowVar 'salesOrdersFromSap'">
             <processor-chain doc:name="Processor Chain">
                 <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="ISA_SALESDOCUMENTS_SEARCH_NEW" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="SAP">
-                    <sap:definition><![CDATA[<jco>
+                    <sap:definition><![CDATA[<ISA_SALESDOCUMENTS_SEARCH_NEW>
 	<import>
-		<field name="CUSTOMER_NUMBER">0000001175</field>
+		<CUSTOMER_NUMBER>0000001175</CUSTOMER_NUMBER>
 	</import>
-</jco>
+</ISA_SALESDOCUMENTS_SEARCH_NEW>
 ]]></sap:definition>
+
                 </sap:outbound-endpoint>
                 <data-mapper:transform config-ref="ISA_SALESDOCUMENTS_SEARCH_NEW_to_BAPI_ISAORDER_GETDETAILEDLIST" doc:name="ISA_SALESDOCUMENTS_SEARCH_NEW to BAPI_ISAORDER_GETDETAILEDLIST"/>
                 <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_ISAORDER_GETDETAILEDLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="query all sales orders from SAP"/>

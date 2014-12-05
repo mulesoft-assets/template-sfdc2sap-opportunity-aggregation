@@ -5,7 +5,7 @@ xmlns:json="http://www.mulesoft.org/schema/mule/json"
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.5.1" 
+version="EE-3.5.2" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
@@ -41,16 +41,18 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
     </sub-flow>
     <sub-flow name="deleteSalesOrdersFromSapFlow" doc:name="deleteSalesOrdersFromSapFlow">
         <foreach doc:name="For Each">
+            <logger level="INFO" doc:name="Logger"/>
             <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_CHANGE" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="Delete Sales Order from SAP" bapiTransaction="true" evaluateFunctionResponse="true">
                 <sap:transaction action="NONE"/>
-                <sap:definition><![CDATA[<jco>
+                <sap:definition><![CDATA[<BAPI_SALESORDER_CHANGE>
 	<import>
-		<field name="SALESDOCUMENT">#[payload]</field>
-		<structure name="ORDER_HEADER_INX">
-			<field name="UPDATEFLAG">D</field>
-		</structure>
+		<SALESDOCUMENT>#[payload]</SALESDOCUMENT>
+		<ORDER_HEADER_INX>
+			<UPDATEFLAG>D</UPDATEFLAG>
+		</ORDER_HEADER_INX>
 	</import>
-</jco>]]></sap:definition>
+</BAPI_SALESORDER_CHANGE>]]></sap:definition>
+
             </sap:outbound-endpoint>
         </foreach>
     </sub-flow>
