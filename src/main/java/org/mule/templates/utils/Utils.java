@@ -17,7 +17,7 @@ import org.mule.api.MuleMessage;
 import com.google.common.collect.Lists;
 
 /**
- * 
+ * Utility class for preparing a List of maps from an iterable property. 
  * @author martin
  *
  */

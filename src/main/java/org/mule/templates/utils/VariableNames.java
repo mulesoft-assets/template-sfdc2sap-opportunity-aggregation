@@ -6,7 +6,7 @@
 package org.mule.templates.utils;
 
 /**
- * 
+ * Defined constants for Salesforce and SAP attributes.
  * @author martin
  *
  */
