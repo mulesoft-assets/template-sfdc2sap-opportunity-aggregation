@@ -12,7 +12,7 @@ For practical purposes this Template will generate the result in the format of a
 
 This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences.
 
-As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name, and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matchhing SAP. The report is then e-mailed to a configured group of e-mail addresses.
+As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matching SAP. The report is then e-mailed to a configured group of e-mail addresses.
 ]]>
 		</section>
 		<section id="considerations">
@@ -72,6 +72,11 @@ After this, to trigger the use case you just need to hit the local HTTP endpoint
 + sap.jco.sysnr `14`
 + sap.jco.client `800`
 + sap.jco.lang `EN`
+
+### SAP Material properties configuration
++ sap.material.type `ZHTI`
++ sap.material.industrySector `T`
++ sap.material.baseUnitOfMeasurement `KGS`
 
 ### SMPT Services configuration
 + smtp.host `smtp.gmail.com`
