@@ -172,11 +172,6 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.jco.client `800`
 + sap.jco.lang `EN`
 
-### SAP Material properties configuration
-+ sap.material.type `ZHTI`
-+ sap.material.industrySector `T`
-+ sap.material.baseUnitOfMeasurement `KGS`
-
 ### SMPT Services configuration
 + smtp.host `smtp.gmail.com`
 + smtp.port `587`
@@ -191,7 +186,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + attachment.name `OrderedReport.csv`
 
 # API Calls <a name="apicalls"/>
-&#160;
+&nbsp;
 
 
 # Customize It!<a name="customizeit"/>
