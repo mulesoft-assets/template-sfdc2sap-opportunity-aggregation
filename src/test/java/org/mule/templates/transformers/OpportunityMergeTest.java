@@ -16,21 +16,29 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mule.DefaultMuleMessage;
 import org.mule.api.MuleContext;
-import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;
-import org.mule.templates.utils.Utils;
 import org.mule.templates.utils.VariableNames;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductMergerTransformerTest {
+public class OpportunityMergeTest {
 
 	@Mock
 	private MuleContext muleContext;
-
+	
 	@Test
 	public void testMerge() throws TransformerException {
+		List<Map<String, String>> sfdcList = prepareSFDCopportunities();
+		List<Map<String, String>> sapList = prepareSAPopportunities();
+
+		OpportunityMerge oppMerge = new OpportunityMerge();
+		List<Map<String, String>> mergedList = oppMerge.mergeList(sfdcList, sapList);
+
+		Assert.assertEquals("The merged list obtained is not as expected",
+				createExpectedList(), mergedList);
+	}
+
+	static List<Map<String, String>> prepareSFDCopportunities(){
 		List<Map<String, String>> opportunitiesSalesforce = new ArrayList<Map<String,String>>();
 
 		Map<String, String> opportunity0Salesforce = new HashMap<String, String>();
@@ -43,6 +51,10 @@ public class ProductMergerTransformerTest {
 		opportunity1Salesforce.put(VariableNames.NAME, "Name1");
 		opportunitiesSalesforce.add(opportunity1Salesforce);
 		
+		return opportunitiesSalesforce;
+	}
+	
+	static List<Map<String, String>> prepareSAPopportunities(){
 		List<Map<String, String>> salesOrdersSap = new ArrayList<Map<String,String>>();
 		
 		Map<String, String> salesOrder1Sap = new HashMap<String, String>();
@@ -54,34 +66,35 @@ public class ProductMergerTransformerTest {
 		salesOrder2Sap.put(VariableNames.ID	, "2");
 		salesOrder2Sap.put(VariableNames.NAME, "Name2");
 		salesOrdersSap.add(salesOrder2Sap);
-
-		MuleMessage message = new DefaultMuleMessage(null, muleContext);
-		message.setInvocationProperty(VariableNames.OPPORTUNITIES_FROM_SALESFORCE, opportunitiesSalesforce.iterator());
-		message.setInvocationProperty(VariableNames.SALES_ORDERS_FROM_SAP, salesOrdersSap.iterator());
-
-		OpportunityMergerTransformer transformer = new OpportunityMergerTransformer();
-		List<Map<String, String>> mergedList = Utils.buildList(transformer.transform(message, "UTF-8"));
-
-		System.out.println(mergedList);
-		Assert.assertEquals("The merged list obtained is not as expected", createExpectedList().size(), mergedList.size());
-	}
-
-	private List<Map<String, String>> createExpectedList() {
+		
+		return salesOrdersSap;
+	}		
+	
+	static List<Map<String, String>> createExpectedList() {
 		Map<String, String> record0 = new HashMap<String, String>();
 		record0.put(VariableNames.ID_IN_SALESFORCE, "0");
 		record0.put(VariableNames.ID_IN_SAP, "");
 		record0.put(VariableNames.NAME, "Name0");
-
+		record0.put(VariableNames.STATUS, null);
+		record0.put(VariableNames.PROBABILITY, null);
+		record0.put(VariableNames.AMOUNT, null);
+		
 		Map<String, String> record1 = new HashMap<String, String>();
 		record1.put(VariableNames.ID_IN_SALESFORCE, "1");
 		record1.put(VariableNames.ID_IN_SAP, "1");
 		record1.put(VariableNames.NAME, "Name1");
-
+		record1.put(VariableNames.STATUS, null);
+		record1.put(VariableNames.PROBABILITY, null);
+		record1.put(VariableNames.AMOUNT, null);
+		
 		Map<String, String> record2 = new HashMap<String, String>();
 		record2.put(VariableNames.ID_IN_SALESFORCE, "");
 		record2.put(VariableNames.ID_IN_SAP, "2");
 		record2.put(VariableNames.NAME, "Name2");
-
+		record2.put(VariableNames.STATUS, null);
+		record2.put(VariableNames.PROBABILITY, null);
+		record2.put(VariableNames.AMOUNT, null);
+		
 		List<Map<String, String>> expectedList = new ArrayList<Map<String, String>>();
 		expectedList.add(record0);
 		expectedList.add(record1);

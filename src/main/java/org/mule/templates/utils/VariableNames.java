@@ -6,7 +6,7 @@
 package org.mule.templates.utils;
 
 /**
- * Defined constants for Salesforce and SAP attributes.
+ * 
  * @author martin
  *
  */
@@ -25,5 +25,11 @@ public interface VariableNames {
 	String IDENTITY_FIELD_KEY = "Name";
 
 	String NAME = "Name";
+
+	String STATUS = "Status";
+
+	String PROBABILITY = "Probability";
+	
+	String AMOUNT = "Amount";
 
 }

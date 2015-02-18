@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
+<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
 xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
@@ -13,6 +13,8 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd
 http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
 
     <data-mapper:config name="map_to_csv" transformationGraphPath="map_to_csv.grf" doc:name="map_to_csv"/>
@@ -22,29 +24,25 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
         <flow name="mainFlow"  doc:description="This flow is the entry point to the Template business logic.
 
 This flow should control the direction of the application, and it should be called by the different endpoints that your Template exposes to trigger it.">
-        <flow-ref name="gatherDataFlow" doc:name="call gatherDataFlow"/>
-        <flow-ref name="aggregationFlow" doc:name="call aggregationFlow"/> 
-        <flow-ref name="formatOutputFlow" doc:name="call formatOutputFlow"/>
-        <flow-ref name="outboundFlow" doc:name="call outboundFlow"/>
+        <flow-ref name="gatherDataFlow" doc:name="gatherDataFlow"/>
+ 
+        <flow-ref name="formatOutputFlow" doc:name="formatOutputFlow"/>
+        <flow-ref name="outboundFlow" doc:name="outboundFlow"/>
         <exception-strategy ref="defaultChoiceExceptionStrategy" doc:name="Reference Exception Strategy"/>
     </flow>
   
     <sub-flow name="gatherDataFlow" >
-        <enricher source="#[payload]" target="#[flowVars['opportunitiesFromSalesforce']]" doc:name="Store result in FlowVar 'opportunitiesFromSalesforce'">
+        <scatter-gather doc:name="Scatter-Gather">
+            <custom-aggregation-strategy class="org.mule.templates.transformers.OpportunityMergeAggregationStrategy"/>
             <sfdc:query config-ref="Salesforce" query="dsql:SELECT Id, Probability, Name, Amount FROM Opportunity" doc:name="query all opportunities from SalesForce"/>
-        </enricher>
- 
-        <enricher source="#[payload]" target="#[flowVars['salesOrdersFromSap']]" doc:name="Store result in FlowVar 'salesOrdersFromSap'">
-            <processor-chain doc:name="Processor Chain">
-                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="ISA_SALESDOCUMENTS_SEARCH_NEW" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="query all sales documents from SAP">
+            <processor-chain>
+                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="ISA_SALESDOCUMENTS_SEARCH_NEW" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="SAP">
                     <sap:definition><![CDATA[<ISA_SALESDOCUMENTS_SEARCH_NEW>
 	<import>
 		<CUSTOMER_NUMBER>0000001175</CUSTOMER_NUMBER>
 	</import>
-</ISA_SALESDOCUMENTS_SEARCH_NEW>]]></sap:definition>
-
-
-
+</ISA_SALESDOCUMENTS_SEARCH_NEW>
+]]></sap:definition>
                 </sap:outbound-endpoint>
                 <data-mapper:transform config-ref="ISA_SALESDOCUMENTS_SEARCH_NEW_to_BAPI_ISAORDER_GETDETAILEDLIST" doc:name="ISA_SALESDOCUMENTS_SEARCH_NEW to BAPI_ISAORDER_GETDETAILEDLIST"/>
                 <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_ISAORDER_GETDETAILEDLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="query all sales orders from SAP"/>
@@ -69,15 +67,13 @@ for (textHeader : payload['TextHeaders']) {
 payload = soMap.values();
 ]]></expression-component>
             </processor-chain>
-        </enricher>
+        </scatter-gather>
+
     </sub-flow>
 
-    <sub-flow name="aggregationFlow" >
-        <custom-transformer class="org.mule.templates.transformers.OpportunityMergerTransformer" doc:name="Custom component to build merged opportunity list"/>
-    </sub-flow>
     
     <sub-flow name="formatOutputFlow" >
-        <custom-transformer class="org.mule.templates.transformers.SortOpportunityListTransformer" doc:name="Custom component to sort opportunity list"/>
+        <custom-transformer class="org.mule.templates.transformers.SortOpportunityList" doc:name="Custom component to sort opportunity list"/>
         <data-mapper:transform config-ref="map_to_csv" doc:name="transform Collection of Maps to CSV Format"/>
         <object-to-string-transformer doc:name="CSV Output Object to String"/>
     </sub-flow>

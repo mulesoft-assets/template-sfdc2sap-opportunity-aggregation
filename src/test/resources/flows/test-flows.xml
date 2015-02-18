@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
+<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 xmlns:json="http://www.mulesoft.org/schema/mule/json" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.5.2" 
+version="EE-3.6.0" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd
 http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
     <data-mapper:config name="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" transformationGraphPath="opportunity_to_bapi_salesorder_createfromdat2.grf" doc:name="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2"/>
     <data-mapper:config name="BAPI_SALESORDER_CREATEFROMDAT2_to_Document_Number_Wrapper" transformationGraphPath="bapi_salesorder_createfromdat2_to_document_number_wrapper.grf" doc:name="BAPI_SALESORDER_CREATEFROMDAT2_to_Document_Number_Wrapper"/>
-    <sub-flow name="createOpportunitiesInSalesforceFlow" doc:name="createOpportunitiesInSalesforceFlow">
+    <sub-flow name="createOpportunitiesInSalesforceFlow" >
         <sfdc:create config-ref="Salesforce" type="Opportunity" doc:name="Salesforce">
-            <sfdc:objects ref="#[payload]"/>
+
         </sfdc:create>
     </sub-flow>
-    <flow name="createSalesOrdersInSapFlow" doc:name="createSalesOrdersInSapFlow">
+    <flow name="createSalesOrdersInSapFlow" >
         <collection-splitter doc:name="Collection Splitter"/>
         <processor-chain doc:name="Processor Chain">
             <expression-component doc:name="Expression"><![CDATA[payload['OpportunityLineItems'] = ['record' : [ 'Quantity' : '1',  'ITM_NUMBER' : '000010', 'PricebookEntry' : ['Product2' : ['sap_external_id' : 'MM-01']]]]]]></expression-component>
@@ -32,16 +34,15 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
         </processor-chain>
         <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
     </flow>
-    <sub-flow name="deleteOpportunitiesFromSalesforceFlow" doc:name="deleteOpportunitiesFromSalesforceFlow">
+    <sub-flow name="deleteOpportunitiesFromSalesforceFlow" >
         <sfdc:delete config-ref="Salesforce" doc:name="Salesforce">
-            <sfdc:ids ref="#[payload]"/>
+
         </sfdc:delete>
     </sub-flow>
-    <sub-flow name="deleteSalesOrdersFromSapFlow" doc:name="deleteSalesOrdersFromSapFlow">
+    <sub-flow name="deleteSalesOrdersFromSapFlow" >
         <foreach doc:name="For Each">
             <logger level="INFO" doc:name="Logger"/>
             <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_CHANGE" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="Delete Sales Order from SAP" bapiTransaction="true" evaluateFunctionResponse="true">
-                <sap:transaction action="NONE"/>
                 <sap:definition><![CDATA[<BAPI_SALESORDER_CHANGE>
 	<import>
 		<SALESDOCUMENT>#[payload]</SALESDOCUMENT>

@@ -20,24 +20,27 @@ import org.mule.DefaultMuleMessage;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleMessage;
 import org.mule.api.transformer.TransformerException;
-import org.mule.templates.utils.Utils;
 import org.mule.templates.utils.VariableNames;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SortProductListTransformerTest {
+public class SortOpportunityListTest {
 	
 	@Mock
 	private MuleContext muleContext;
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testSort() throws TransformerException {
-		MuleMessage message = new DefaultMuleMessage(createOriginalList(), muleContext);
+		List<Map<String, String>> originalList = createOriginalList();
+		MuleMessage message = new DefaultMuleMessage(originalList.iterator(), muleContext);
 
-		SortOpportunityListTransformer transformer = new SortOpportunityListTransformer();
-		List<Map<String, String>> sortedList = Utils.buildList(transformer.transform(message, "UTF-8"));
+		SortOpportunityList transformer = new SortOpportunityList();
+		List<Map<String, String>> sortedList = (List<Map<String, String>>) transformer
+				.transform(message, "UTF-8");
 
-		System.out.println(sortedList);
-		Assert.assertEquals("The merged list obtained is not as expected", createExpectedList(), sortedList);
+		Assert.assertEquals("The merged list obtained is not as expected",
+				createExpectedList(), sortedList);
+
 	}
 
 	private List<Map<String, String>> createExpectedList() {

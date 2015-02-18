@@ -3,6 +3,7 @@
  * Copyright (c) MuleSoft, Inc.
  * All rights reserved.  http://www.mulesoft.com
  */
+
 package org.mule.templates.transformers;
 
 import java.util.ArrayList;
@@ -10,11 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mule.api.MuleMessage;
-import org.mule.api.transformer.TransformerException;
+import org.apache.commons.lang3.StringUtils;
 import org.mule.templates.utils.VariableNames;
-import org.mule.templates.utils.Utils;
-import org.mule.transformer.AbstractMessageTransformer;
 
 /**
  * This transformer will take two lists as input and create a third one that
@@ -22,31 +20,19 @@ import org.mule.transformer.AbstractMessageTransformer;
  * defined by its Name.
  * 
  * @author damian.sima
- * @author martin
  */
-public final class OpportunityMergerTransformer extends AbstractMessageTransformer {
-
-	private static final String EMPTY = "";
-
-	@Override
-	public Object transformMessage(MuleMessage message, String outputEncoding) throws TransformerException {
-		List<Map<String, String>> mergedAccountsList = mergeList(
-				Utils.buildList(message, VariableNames.OPPORTUNITIES_FROM_SALESFORCE),
-				Utils.buildList(message, VariableNames.SALES_ORDERS_FROM_SAP));
-
-		return mergedAccountsList;
-	}
+public class OpportunityMerge {
 
 	/**
 	 * The method will merge the opportunities from the two lists creating a new one.
 	 * 
-	 * @param opportunitiesFromSalesforce
-	 *            opportunities from Salesforce
-	 * @param salesOrdersFromSap
-	 *            sales orders from SAP
+	 * @param opportunitiesFromOrgA
+	 *            opportunities from organization A
+	 * @param opportunitiesFromOrgB
+	 *            opportunities from organization B
 	 * @return a list with the merged content of the to input lists
 	 */
-	private static List<Map<String, String>> mergeList(List<Map<String, String>> opportunitiesFromSalesforce, List<Map<String, String>> salesOrdersFromSap) {
+	List<Map<String, String>> mergeList(List<Map<String, String>> opportunitiesFromSalesforce, List<Map<String, String>> salesOrdersFromSap) {
 		List<Map<String, String>> mergedOpportunityList = new ArrayList<Map<String, String>>();
 
 		// Put all opportunities from Salesforce in the merged mergedOpportunityList
@@ -75,8 +61,8 @@ public final class OpportunityMergerTransformer extends AbstractMessageTransform
 	private static Map<String, String> createMergedOpportunity(Map<String, String> opportunity) {
 		Map<String, String> mergedOpportunity = new HashMap<String, String>();
 		mergedOpportunity.put(VariableNames.IDENTITY_FIELD_KEY, opportunity.get(VariableNames.IDENTITY_FIELD_KEY));
-		mergedOpportunity.put(VariableNames.ID_IN_SALESFORCE, EMPTY);
-		mergedOpportunity.put(VariableNames.ID_IN_SAP, EMPTY);
+		mergedOpportunity.put(VariableNames.ID_IN_SALESFORCE, StringUtils.EMPTY);
+		mergedOpportunity.put(VariableNames.ID_IN_SAP, StringUtils.EMPTY);
 		mergedOpportunity.put("Amount", opportunity.get("Amount"));
 		mergedOpportunity.put("Probability", opportunity.get("Probability"));
 		mergedOpportunity.put("Status", opportunity.get("Status"));

@@ -32,7 +32,7 @@ For practical purposes this Template will generate the result in the format of a
 
 This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences.
 
-As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matching SAP. The report is then e-mailed to a configured group of e-mail addresses.
+As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name, and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matchhing SAP. The report is then e-mailed to a configured group of e-mail addresses.
 
 # Considerations <a name="considerations"/>
 
@@ -186,7 +186,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + attachment.name `OrderedReport.csv`
 
 # API Calls <a name="apicalls"/>
-&nbsp;
+&#160;
 
 
 # Customize It!<a name="customizeit"/>
@@ -216,10 +216,9 @@ This flow has Exception Strategy that basically consists on invoking the *defaul
 ### Gather Data Flow
 Mainly consisting of two calls (Queries) to Salesforce and SAP and storing each response on the Invocation Variable named *opportunitiesFromSalesforce* or *salesOrdersFromSap* accordingly.
 
-### Aggregation Flow
-[Java Transformer](http://www.mulesoft.org/documentation/display/current/Java+Transformer+Reference) responsible for aggregating the results from the Salesforce and SAP.
+[Scatter Gather](http://www.mulesoft.org/documentation/display/current/Scatter-Gather) is responsible for aggregating the results from the two collections of Opportunities.
 Criteria and format applied:
-+ Transformer receives a Mule Message with the two Invocation variables *opportunitiesFromSalesforce* and *salesOrdersFromSap* to result in List of Maps with keys: **Name**, **Probability**, **Amount**, **Status**, **OpportunityId** and **SalesOrderNumber**.
++ Scatter Gather component implements an aggregation strategy that results in List of Maps with keys: **Name**, **Probability**, **Amount**, **Status**, **OpportunityId** and **SalesOrderNumber**.
 + Opportunities and Sales Orders will be matched by name, that is to say, a record in both instances with same name is considered the same Opportunity / Sales Order.
 
 ### Format Output Flow

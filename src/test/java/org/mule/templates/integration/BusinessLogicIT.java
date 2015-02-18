@@ -6,12 +6,10 @@
 package org.mule.templates.integration;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -102,19 +100,14 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 	@Test
 	public void testGatherDataFlow() throws Exception {
 		SubflowInterceptingChainLifecycleWrapper flow = getSubFlow("gatherDataFlow");
+		flow.setMuleContext(muleContext);
 		flow.initialise();
-
+		flow.start();
 		MuleEvent event = flow.process(getTestEvent("", MessageExchangePattern.REQUEST_RESPONSE));
-		Set<String> flowVariables = event.getFlowVariableNames();
-
-		Assert.assertTrue("The variable " + VariableNames.OPPORTUNITIES_FROM_SALESFORCE + " is missing.", flowVariables.contains(VariableNames.OPPORTUNITIES_FROM_SALESFORCE));
-		Assert.assertTrue("The variable " + VariableNames.SALES_ORDERS_FROM_SAP + " is missing.", flowVariables.contains(VariableNames.SALES_ORDERS_FROM_SAP));
-
-		Iterator<?> opportunitiesFromSalesforce = event.getFlowVariable(VariableNames.OPPORTUNITIES_FROM_SALESFORCE);
-		Collection<?> salesOrdersFromSap = event.getFlowVariable(VariableNames.SALES_ORDERS_FROM_SAP);
-
-		Assert.assertTrue("There should be opportunities in the variable " + VariableNames.OPPORTUNITIES_FROM_SALESFORCE + ".", opportunitiesFromSalesforce.hasNext());
-		Assert.assertTrue("There should be sales orders in the variable " + VariableNames.SALES_ORDERS_FROM_SAP + ".", !salesOrdersFromSap.isEmpty());
+		Iterator<Map<String, String>> mergedList = (Iterator<Map<String, String>>)event.getMessage().getPayload();
+		
+		Assert.assertTrue("There should be opportunities from source A or source B.", mergedList.hasNext());
 	}
+
 
 }
