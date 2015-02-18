@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mule.templates.utils.VariableNames;
 
 /**
@@ -61,8 +60,8 @@ public class OpportunityMerge {
 	private static Map<String, String> createMergedOpportunity(Map<String, String> opportunity) {
 		Map<String, String> mergedOpportunity = new HashMap<String, String>();
 		mergedOpportunity.put(VariableNames.IDENTITY_FIELD_KEY, opportunity.get(VariableNames.IDENTITY_FIELD_KEY));
-		mergedOpportunity.put(VariableNames.ID_IN_SALESFORCE, StringUtils.EMPTY);
-		mergedOpportunity.put(VariableNames.ID_IN_SAP, StringUtils.EMPTY);
+		mergedOpportunity.put(VariableNames.ID_IN_SALESFORCE, "");
+		mergedOpportunity.put(VariableNames.ID_IN_SAP, "");
 		mergedOpportunity.put("Amount", opportunity.get("Amount"));
 		mergedOpportunity.put("Probability", opportunity.get("Probability"));
 		mergedOpportunity.put("Status", opportunity.get("Status"));
