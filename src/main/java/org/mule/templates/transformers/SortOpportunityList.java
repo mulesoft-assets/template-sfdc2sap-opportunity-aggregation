@@ -28,12 +28,12 @@ import com.google.common.collect.Lists;
  */
 public final class SortOpportunityList extends AbstractMessageTransformer {
 	
-	private static final Comparator<Map<String, String>> PRODUCT_MAP_COMPARATOR = new Comparator<Map<String, String>>() {
+	private static final Comparator<Map<String, String>> OPPORTUNITY_MAP_COMPARATOR = new Comparator<Map<String, String>>() {
 
 		@Override
-		public int compare(Map<String, String> product1, Map<String, String> product2) {
-			String key1 = buildKey(product1);
-			String key2 = buildKey(product2);
+		public int compare(Map<String, String> opp1, Map<String, String> opp2) {
+			String key1 = buildKey(opp1);
+			String key2 = buildKey(opp2);
 
 			return key1.compareTo(key2);
 		}
@@ -64,7 +64,7 @@ public final class SortOpportunityList extends AbstractMessageTransformer {
 
 		List<Map<String, String>> sortedUsersList = Lists.newArrayList((Iterator<Map<String, String>>) message.getPayload());
 
-		Collections.sort(sortedUsersList, PRODUCT_MAP_COMPARATOR);
+		Collections.sort(sortedUsersList, OPPORTUNITY_MAP_COMPARATOR);
 
 		return sortedUsersList;
 	}
