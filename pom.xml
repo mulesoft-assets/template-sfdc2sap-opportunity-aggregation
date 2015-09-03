@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.mule.templates</groupId>
 		<artifactId>templates-tooling-parent-pom</artifactId>
-		<version>1.2.3</version>
+		<version>1.2.2</version>
 	</parent>
 
 	<artifactId>template-sfdc2sap-opportunity-aggregation</artifactId>
@@ -17,7 +17,6 @@
 	<properties>
 		<sap.jco.version>3.0.13</sap.jco.version>
 		<sap.idoc.version>3.0.12</sap.idoc.version>
-		<sap.build.type>linux64</sap.build.type>
 	</properties>
 
 	<build>
@@ -56,9 +55,8 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 	<dependencies>
-		<!-- Connectors -->
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-module-sfdc</artifactId>
@@ -69,26 +67,19 @@
 			<artifactId>mule-transport-sap</artifactId>
 			<version>${sap.version}</version>
 		</dependency>
-
-		<!-- SAP Dependencies -->
 		<dependency>
 			<groupId>com.sap.conn.jco</groupId>
-			<artifactId>sapjco3</artifactId>
+			<artifactId>sapjco</artifactId>
 			<version>${sap.jco.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sap.conn.jco</groupId>
-			<artifactId>sapjco-native</artifactId>
-			<version>${sap.jco.version}</version>
-			<classifier>${sap.build.type}</classifier>
-			<scope>test</scope>
+			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.sap.conn.idoc</groupId>
-			<artifactId>sapidoc3</artifactId>
+			<artifactId>sapidoc</artifactId>
 			<version>${sap.idoc.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -97,25 +88,31 @@
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
-	<dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-spring-config</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    <dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-http</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    <dependency>
-            <groupId>com.mulesoft.weave</groupId>
-            <artifactId>mule-plugin-weave_2.11</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-spring-config</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-module-http</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.weave</groupId>
+			<artifactId>mule-plugin-weave_2.11</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 
 	<repositories>
 		<repository>
@@ -125,15 +122,15 @@
 			<layout>default</layout>
 		</repository>
 		<repository>
-			<id>mulesoft-snapshots</id>
-			<name>MuleSoft Snapshots Repository</name>
-			<url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
 			<id>mule-ee-releases</id>
 			<name>MuleSoft Releases EE Repository</name>
 			<url>https://repository.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>mulesoft-snapshots</id>
+			<name>MuleSoft Snapshots Repository</name>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/snapshots/</url>
 			<layout>default</layout>
 		</repository>
 	</repositories>
