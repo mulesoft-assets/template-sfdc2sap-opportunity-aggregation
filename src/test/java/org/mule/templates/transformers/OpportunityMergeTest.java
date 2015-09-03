@@ -20,6 +20,7 @@ import org.mule.api.MuleContext;
 import org.mule.api.transformer.TransformerException;
 import org.mule.templates.utils.VariableNames;
 
+@SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class OpportunityMergeTest {
 

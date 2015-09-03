@@ -24,7 +24,7 @@ import org.mule.templates.integration.AbstractTemplateTestCase;
 
 import com.google.common.collect.Lists;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "deprecation" })
 @RunWith(MockitoJUnitRunner.class)
 public class OpportunityMergeAggregationStrategyTest extends AbstractTemplateTestCase {
 	

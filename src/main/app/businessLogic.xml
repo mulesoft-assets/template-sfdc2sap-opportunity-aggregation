@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" 
+<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:sap="http://www.mulesoft.org/schema/mule/sap" 
 xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.6.0" 
+version="EE-3.7.1" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd
-http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
 
-    <data-mapper:config name="map_to_csv" transformationGraphPath="map_to_csv.grf" doc:name="map_to_csv"/>
-    <data-mapper:config name="ISA_SALESDOCUMENTS_SEARCH_NEW_to_BAPI_ISAORDER_GETDETAILEDLIST" transformationGraphPath="isa_salesdocuments_search_new_to_bapi_isaorder_getdetailedlist.grf" doc:name="ISA_SALESDOCUMENTS_SEARCH_NEW_to_BAPI_ISAORDER_GETDETAILEDLIST"/>
-    <data-mapper:config name="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Data" transformationGraphPath="bapi_isaorder_getdetailedlist_to_sales_data.grf" doc:name="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Data"/>
-
-        <flow name="mainFlow"  doc:description="This flow is the entry point to the Template business logic.
+	 <flow name="mainFlow"  doc:description="This flow is the entry point to the Template business logic.
 
 This flow should control the direction of the application, and it should be called by the different endpoints that your Template exposes to trigger it.">
-        <flow-ref name="gatherDataFlow" doc:name="gatherDataFlow"/>
+        <flow-ref name="gatherDataFlow" doc:name="Call gatherDataFlow"/>
  
-        <flow-ref name="formatOutputFlow" doc:name="formatOutputFlow"/>
-        <flow-ref name="outboundFlow" doc:name="outboundFlow"/>
+        <flow-ref name="formatOutputFlow" doc:name="Call formatOutputFlow"/>
+        <flow-ref name="outboundFlow" doc:name="Call outboundFlow"/>
         <exception-strategy ref="defaultChoiceExceptionStrategy" doc:name="Reference Exception Strategy"/>
     </flow>
   
-    <sub-flow name="gatherDataFlow" >
+    <flow name="gatherDataFlow" >
         <scatter-gather doc:name="Scatter-Gather">
             <custom-aggregation-strategy class="org.mule.templates.transformers.OpportunityMergeAggregationStrategy"/>
-            <sfdc:query config-ref="Salesforce" query="dsql:SELECT Id, Probability, Name, Amount FROM Opportunity" doc:name="query all opportunities from SalesForce"/>
+            <sfdc:query config-ref="Salesforce" query="dsql:SELECT Id, Probability, Name, Amount FROM Opportunity" doc:name="Query all opportunities from SalesForce"/>
             <processor-chain>
                 <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="ISA_SALESDOCUMENTS_SEARCH_NEW" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="SAP">
                     <sap:definition><![CDATA[<ISA_SALESDOCUMENTS_SEARCH_NEW>
@@ -44,9 +38,54 @@ This flow should control the direction of the application, and it should be call
 </ISA_SALESDOCUMENTS_SEARCH_NEW>
 ]]></sap:definition>
                 </sap:outbound-endpoint>
-                <data-mapper:transform config-ref="ISA_SALESDOCUMENTS_SEARCH_NEW_to_BAPI_ISAORDER_GETDETAILEDLIST" doc:name="ISA_SALESDOCUMENTS_SEARCH_NEW to BAPI_ISAORDER_GETDETAILEDLIST"/>
-                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_ISAORDER_GETDETAILEDLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="query all sales orders from SAP"/>
-                <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Data" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Data"/>
+				<dw:transform-message doc:name="Transform ISA_SALESDOCUMENTS_SEARCH_NEW to BAPI_ISAORDER_GETDETAILEDLIST">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+---
+{
+	"BAPI_ISAORDER_GETDETAILEDLIST": {
+		import: {
+			"I_BAPI_VIEW": {
+				"STATUS_H": "X",
+				TEXT: "X"
+			}
+		},
+		tables: {			
+			"SALES_DOCUMENTS": {
+				(payload."ISA_SALESDOCUMENTS_SEARCH_NEW".tables."STATUS_DATA".*row map {
+					row: {
+						VBELN: $.VBELN
+					}
+				})				
+			}
+		}
+	}
+}]]></dw:set-payload>
+                </dw:transform-message>
+
+
+                <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_ISAORDER_GETDETAILEDLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="Query all sales orders from SAP"/>
+
+                <dw:transform-message doc:name="Transform BAPI_ISAORDER_GETDETAILEDLIST to Sales Data">
+                    <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+StatusHeaders: payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_STATUSHEADERS_OUT".*row map {
+		Status: $."ISA_DOC_STATUS",
+		Id: $."SD_DOC"
+	},
+TextHeaders: payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTHEADERS_OUT".*row map {
+		Id : $.SD_DOC,
+		TextName : $.TEXT_NAME
+	},
+TextLines: payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTLINES_OUT".*row map {
+		Line : $.LINE,
+		TextName : $.TEXT_NAME
+	}	
+}]]></dw:set-payload>
+                </dw:transform-message>
+
                 <expression-component doc:name="Expression"><![CDATA[soMap = new HashMap();
 for (statusHeader : payload['StatusHeaders']) {
 	soMap.put(statusHeader['Id'], [ 'Status' : statusHeader['Status'], 'Id' : statusHeader['Id']]);
@@ -57,7 +96,7 @@ for (textLine : payload['TextLines']) {
 	textNameToLine.put(textLine.get('TextName'), textLine.get('Line'));
 }
 
-for (textHeader : payload['TextHeaders']) {
+for (textHeader : payload['TextHeaders']) { 
     item = soMap.get(textHeader.get('Id'));
 	if (item != null) {
 		item.put('Name', textNameToLine.get(textHeader.get('TextName')));
@@ -66,15 +105,21 @@ for (textHeader : payload['TextHeaders']) {
 
 payload = soMap.values();
 ]]></expression-component>
+
             </processor-chain>
         </scatter-gather>
 
-    </sub-flow>
-
+    </flow>
     
-    <sub-flow name="formatOutputFlow" >
+    <flow name="formatOutputFlow" >
         <custom-transformer class="org.mule.templates.transformers.SortOpportunityList" doc:name="Custom component to sort opportunity list"/>
-        <data-mapper:transform config-ref="map_to_csv" doc:name="transform Collection of Maps to CSV Format"/>
+        <dw:transform-message doc:name="Transform Collection of Maps to CSV Format">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/csv header=true, quoteValues=true
+---
+payload]]></dw:set-payload>
+        </dw:transform-message>
+
         <object-to-string-transformer doc:name="CSV Output Object to String"/>
-    </sub-flow>
+    </flow>
 </mule>

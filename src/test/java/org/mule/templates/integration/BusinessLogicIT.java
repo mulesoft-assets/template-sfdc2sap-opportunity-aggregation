@@ -14,7 +14,6 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mule.MessageExchangePattern;
 import org.mule.api.MuleEvent;
@@ -31,15 +30,8 @@ import com.sforce.soap.partner.SaveResult;
  */
 public class BusinessLogicIT extends AbstractTemplateTestCase {
 
-	private List<Map<String, Object>> createdOpportunitiesInSalesforce = new ArrayList<Map<String, Object>>();
-	private List<Map<String, Object>> createdSalesOrdersInSap = new ArrayList<Map<String, Object>>();
-
-	@BeforeClass
-	public static void init() {
-		System.setProperty("mail.subject", "Opportunities/Sales Orders Report");
-		System.setProperty("mail.body", "Please find attached your Opportunities/Sales Orders Report");
-		System.setProperty("attachment.name", "OpportunitiesSalesOrdersReport.csv");
-	}
+	private final List<Map<String, Object>> createdOpportunitiesInSalesforce = new ArrayList<Map<String, Object>>();
+	private final List<Map<String, Object>> createdSalesOrdersInSap = new ArrayList<Map<String, Object>>();
 	
 	@Before
 	public void setUp() throws Exception {
@@ -97,13 +89,10 @@ public class BusinessLogicIT extends AbstractTemplateTestCase {
 		flow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testGatherDataFlow() throws Exception {
-		SubflowInterceptingChainLifecycleWrapper flow = getSubFlow("gatherDataFlow");
-		flow.setMuleContext(muleContext);
-		flow.initialise();
-		flow.start();
-		MuleEvent event = flow.process(getTestEvent("", MessageExchangePattern.REQUEST_RESPONSE));
+	public void testGatherDataFlow() throws Exception {		
+		MuleEvent event = runFlow("gatherDataFlow");
 		Iterator<Map<String, String>> mergedList = (Iterator<Map<String, String>>)event.getMessage().getPayload();
 		
 		Assert.assertTrue("There should be opportunities from source A or source B.", mergedList.hasNext());

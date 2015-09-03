@@ -50,6 +50,7 @@ public class OpportunityMergeAggregationStrategy implements AggregationStrategy 
 		return new DefaultMuleEvent(muleMessage, muleEvent);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Map<String, String>> getOpportunitiesList(List<MuleEvent> events, int index) {
 		Iterator<Map<String, String>> iterator;
 		if (events.get(index).getMessage().getPayload() instanceof Collection){

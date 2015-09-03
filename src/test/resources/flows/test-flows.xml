@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:siebel="http://www.mulesoft.org/schema/mule/siebel" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"  xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 xmlns:json="http://www.mulesoft.org/schema/mule/json" 
 xmlns="http://www.mulesoft.org/schema/mule/core" 
 xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" 
 xmlns:spring="http://www.springframework.org/schema/beans" 
-version="EE-3.6.0" 
+version="EE-3.7.1" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
-http://www.mulesoft.org/schema/mule/siebel http://www.mulesoft.org/schema/mule/siebel/current/mule-siebel.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
-http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd">
-    <data-mapper:config name="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" transformationGraphPath="opportunity_to_bapi_salesorder_createfromdat2.grf" doc:name="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2"/>
-    <data-mapper:config name="BAPI_SALESORDER_CREATEFROMDAT2_to_Document_Number_Wrapper" transformationGraphPath="bapi_salesorder_createfromdat2_to_document_number_wrapper.grf" doc:name="BAPI_SALESORDER_CREATEFROMDAT2_to_Document_Number_Wrapper"/>
-    <sub-flow name="createOpportunitiesInSalesforceFlow" >
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+<sub-flow name="createOpportunitiesInSalesforceFlow" >
         <sfdc:create config-ref="Salesforce" type="Opportunity" doc:name="Salesforce">
 
         </sfdc:create>
@@ -25,11 +21,73 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
     <flow name="createSalesOrdersInSapFlow" >
         <collection-splitter doc:name="Collection Splitter"/>
         <processor-chain doc:name="Processor Chain">
-            <expression-component doc:name="Expression"><![CDATA[payload['OpportunityLineItems'] = ['record' : [ 'Quantity' : '1',  'ITM_NUMBER' : '000010', 'PricebookEntry' : ['Product2' : ['sap_external_id' : 'MM-01']]]]]]></expression-component>
-            <data-mapper:transform config-ref="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" doc:name="Opportunity to BAPI_SALESORDER_CREATEFROMDAT2"/>
+            <expression-component doc:name="Set OportunityLineItems in the payload"><![CDATA[payload['OpportunityLineItems'] = ['record' : [ 'Quantity' : '1',  'ITM_NUMBER' : '000010', 'PricebookEntry' : ['Product2' : ['sap_external_id' : 'MM-01']]]]]]></expression-component>
+<!--             <data-mapper:transform config-ref="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" doc:name="Opportunity to BAPI_SALESORDER_CREATEFROMDAT2"/> -->
+            <dw:transform-message doc:name="Opportunity to BAPI_SALESORDER_CREATEFROMDAT2">
+                <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+---
+using (oppLineItem = payload.OpportunityLineItems.record) {
+	"BAPI_SALESORDER_CREATEFROMDAT2": {
+		
+		import: {
+			"ORDER_HEADER_IN": {
+				"DOC_TYPE": "TA",
+				"PURCH_NO_C": payload.Id				
+			}
+		},
+		tables: {
+			"ORDER_ITEMS_IN": {
+				row: {
+					"ITM_NUMBER": oppLineItem.ITM_NUMBER,
+					MATERIAL: oppLineItem.PricebookEntry.Product2.sap_external_id__c,
+					"TARGET_QTY": oppLineItem.Quantity
+				}
+			},			
+			"ORDER_ITEMS_INX": {
+				row: {
+					"ITM_NUMBER": oppLineItem.ITM_NUMBER,
+					UPDATEFLAG: "I",
+					MATERIAL: "X"
+				}
+			},			
+			"ORDER_PARTNERS": {
+				row: {
+					"PARTN_ROLE": "AG",
+					"PARTN_NUMB": "0000001175"					
+				}
+			},
+			"ORDER_SCHEDULES_IN": {
+				row: {
+					"ITM_NUMBER": oppLineItem.ITM_NUMBER,
+					"REQ_QTY": oppLineItem.Quantity
+				}
+			},			
+			"ORDER_TEXT": {
+				row: {
+					"TEXT_ID": "0001",
+					LANGU: "EN",
+					"TEXT_LINE": payload.Name
+				}
+			}
+		}
+	}
+}]]></dw:set-payload>
+            </dw:transform-message>
+            <logger level="INFO" metadata:id="f430dd1f-6c60-4902-9159-56bf1a7c6924" doc:name="Logger"/>
             <byte-array-to-string-transformer doc:name="Byte Array to String"/>
             <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_CREATEFROMDAT2" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="Upsert Sales Order to SAP" bapiTransaction="true"/>
-            <data-mapper:transform config-ref="BAPI_SALESORDER_CREATEFROMDAT2_to_Document_Number_Wrapper" doc:name="BAPI_SALESORDER_CREATEFROMDAT2 to Document Number Wrapper"/>
+<!--             <data-mapper:transform config-ref="BAPI_SALESORDER_CREATEFROMDAT2_to_Document_Number_Wrapper" doc:name="BAPI_SALESORDER_CREATEFROMDAT2 to Document Number Wrapper"/> -->
+<!--             <data-mapper:transform config-ref="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" doc:name="Copy_of_Opportunity to BAPI_SALESORDER_CREATEFROMDAT2"/> -->
+            <dw:transform-message doc:name="Transform Message">
+                <dw:set-payload><![CDATA[%dw 1.0
+%output application/java
+---
+{
+	DocumentNumber : payload.BAPI_SALESORDER_CREATEFROMDAT2.export.SALESDOCUMENT
+}]]></dw:set-payload>
+            </dw:transform-message>
+
             <set-payload value="#[payload['DocumentNumber']]" doc:name="Set Payload"/>
         </processor-chain>
         <collection-aggregator failOnTimeout="true" doc:name="Collection Aggregator"/>
