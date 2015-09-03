@@ -15,8 +15,8 @@
 	<name>template-sfdc2sap-opportunity-aggregation Anypoint Template Project</name>
 
 	<properties>
-		<sap.jco.version>3.0.10</sap.jco.version>
-		<sap.idoc.version>3.0.10</sap.idoc.version>
+		<sap.jco.version>3.0.13</sap.jco.version>
+		<sap.idoc.version>3.0.12</sap.idoc.version>
 		<sap.build.type>linux64</sap.build.type>
 	</properties>
 
