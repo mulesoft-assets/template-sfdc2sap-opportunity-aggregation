@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jersey.repackaged.com.google.common.collect.Lists;
+
 import org.mule.templates.utils.VariableNames;
 
 /**
@@ -31,7 +33,7 @@ public class OpportunityMerge {
 	 *            opportunities from organization B
 	 * @return a list with the merged content of the to input lists
 	 */
-	List<Map<String, String>> mergeList(List<Map<String, String>> opportunitiesFromSalesforce, List<Map<String, String>> salesOrdersFromSap) {
+	List<Map<String, String>> mergeList(List<Map<String, String>> opportunitiesFromSalesforce, List<List<Map<String, String>>> salesOrdersFromSap) {
 		List<Map<String, String>> mergedOpportunityList = new ArrayList<Map<String, String>>();
 
 		// Put all opportunities from Salesforce in the merged mergedOpportunityList
@@ -39,10 +41,11 @@ public class OpportunityMerge {
 			Map<String, String> mergedOpportunity = createMergedOpportunity(opportunityFromSalesforce);
 			mergedOpportunity.put(VariableNames.ID_IN_SALESFORCE, opportunityFromSalesforce.get(VariableNames.ID));
 			mergedOpportunityList.add(mergedOpportunity);
-		}
-
-		// Add the new opportunities from SAP and update the exiting ones
-		for (Map<String, String> salesOrderFromSap : salesOrdersFromSap) {
+		}			
+		
+		// Add the new opportunities from SAP and update the exiting ones		
+		List<Map<String, String>> preparedSalesOrdersFromSap = prepareSapSalesOrders(salesOrdersFromSap);
+		for (Map<String, String> salesOrderFromSap : preparedSalesOrdersFromSap) {
 			Map<String, String> opportunityFromSalesforce = findOpportunityInList(salesOrderFromSap.get(VariableNames.IDENTITY_FIELD_KEY), mergedOpportunityList);
 			if (opportunityFromSalesforce != null) {
 				opportunityFromSalesforce.put(VariableNames.ID_IN_SAP, salesOrderFromSap.get(VariableNames.ID));
@@ -51,9 +54,9 @@ public class OpportunityMerge {
 				Map<String, String> mergedOpportunity = createMergedOpportunity(salesOrderFromSap);
 				mergedOpportunity.put(VariableNames.ID_IN_SAP, salesOrderFromSap.get(VariableNames.ID));
 				mergedOpportunityList.add(mergedOpportunity);
-			}
-
-		}
+			}				
+		}		
+		
 		return mergedOpportunityList;
 	}
 
@@ -76,6 +79,31 @@ public class OpportunityMerge {
 			}
 		}
 		return null;
+	}
+	
+	private List<Map<String, String>> prepareSapSalesOrders( List<List<Map<String, String>>> salesOrdersFromSap) {
+		
+		HashMap<String, Map<String, String>> soMap = new HashMap<String, Map<String, String>>();
+		
+		List<Map<String, String>> statusHeaders = salesOrdersFromSap.get(0);
+		for (Map<String, String> statusHeader: statusHeaders)
+			soMap.put(statusHeader.get("Id"), new HashMap<String, String>() {{						
+				put("Status", statusHeader.get("Status"));
+				put("Id", statusHeader.get("Id"));
+			}});
+				
+		Map<String, String> textNameToLine = new HashMap<String, String>();
+		for (Map<String, String> textLine : salesOrdersFromSap.get(1)) {
+				textNameToLine.put(textLine.get("TextName"), textLine.get("Line"));
+			}
+			
+		for (Map<String, String> textHeader : salesOrdersFromSap.get(2)) {					
+			Map<String, String> item = soMap.get(textHeader.get("Id"));
+			if (item != null)
+				item.put("Name", textNameToLine.get( textHeader.get("TextName")));
+		}
+		
+		return Lists.newArrayList(soMap.values());
 	}
 
 }

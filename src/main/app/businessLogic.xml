@@ -86,25 +86,6 @@ TextLines: payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTLINES_OUT".
 }]]></dw:set-payload>
                 </dw:transform-message>
 
-                <expression-component doc:name="Expression"><![CDATA[soMap = new HashMap();
-for (statusHeader : payload['StatusHeaders']) {
-	soMap.put(statusHeader['Id'], [ 'Status' : statusHeader['Status'], 'Id' : statusHeader['Id']]);
-}
-
-textNameToLine = new HashMap();
-for (textLine : payload['TextLines']) {
-	textNameToLine.put(textLine.get('TextName'), textLine.get('Line'));
-}
-
-for (textHeader : payload['TextHeaders']) { 
-    item = soMap.get(textHeader.get('Id'));
-	if (item != null) {
-		item.put('Name', textNameToLine.get(textHeader.get('TextName')));
-	}
-}
-
-payload = soMap.values();
-]]></expression-component>
 
             </processor-chain>
         </scatter-gather>

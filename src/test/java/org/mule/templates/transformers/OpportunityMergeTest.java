@@ -7,11 +7,12 @@ package org.mule.templates.transformers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,7 +21,6 @@ import org.mule.api.MuleContext;
 import org.mule.api.transformer.TransformerException;
 import org.mule.templates.utils.VariableNames;
 
-@SuppressWarnings("deprecation")
 @RunWith(MockitoJUnitRunner.class)
 public class OpportunityMergeTest {
 
@@ -30,13 +30,24 @@ public class OpportunityMergeTest {
 	@Test
 	public void testMerge() throws TransformerException {
 		List<Map<String, String>> sfdcList = prepareSFDCopportunities();
-		List<Map<String, String>> sapList = prepareSAPopportunities();
+		List<List<Map<String, String>>> sapList = prepareSAPopportunities();
 
 		OpportunityMerge oppMerge = new OpportunityMerge();
 		List<Map<String, String>> mergedList = oppMerge.mergeList(sfdcList, sapList);
-
-		Assert.assertEquals("The merged list obtained is not as expected",
-				createExpectedList(), mergedList);
+				
+		assertTwoLists( "The merged list obtained is not as expected", createExpectedList(), mergedList);
+	}
+	
+	public static void assertTwoLists(String message ,List<Map<String, String>> expectedList, List<Map<String, String>> actualList) {
+		
+		for ( int i=0; i< expectedList.size(); i++) {			
+			Iterator<Entry<String, String>> it = expectedList.get(i).entrySet().iterator();
+			
+		    while (it.hasNext()) {
+		        Entry<String, String> mapEntry =it.next();		        
+		        Assert.assertEquals(message,expectedList.get(i).get( mapEntry.getValue()), actualList.get(i).get(mapEntry.getValue()));		        
+		    }
+		}
 	}
 
 	static List<Map<String, String>> prepareSFDCopportunities(){
@@ -55,19 +66,42 @@ public class OpportunityMergeTest {
 		return opportunitiesSalesforce;
 	}
 	
-	static List<Map<String, String>> prepareSAPopportunities(){
-		List<Map<String, String>> salesOrdersSap = new ArrayList<Map<String,String>>();
+	static List<List<Map<String, String>>> prepareSAPopportunities(){
+		List<List<Map<String, String>>> salesOrdersSap = new ArrayList<List<Map<String, String>>>();
 		
-		Map<String, String> salesOrder1Sap = new HashMap<String, String>();
-		salesOrder1Sap.put(VariableNames.ID, "1");
-		salesOrder1Sap.put(VariableNames.NAME, "Name1");
-		salesOrdersSap.add(salesOrder1Sap);
-
-		Map<String, String> salesOrder2Sap = new HashMap<String, String>();
-		salesOrder2Sap.put(VariableNames.ID	, "2");
-		salesOrder2Sap.put(VariableNames.NAME, "Name2");
-		salesOrdersSap.add(salesOrder2Sap);
+		List<Map<String, String>> statusHeaders = new ArrayList<Map<String, String>>();
+		HashMap<String, String> sh1 = new HashMap<String, String>();
+		sh1.put(VariableNames.ID, "1");
+		sh1.put(VariableNames.STATUS, "null");
+		HashMap<String, String> sh2 = new HashMap<String, String>();
+		sh2.put(VariableNames.ID, "2");
+		sh2.put(VariableNames.STATUS, "null");
+		statusHeaders.add(sh1);
+		statusHeaders.add(sh2);
+		salesOrdersSap.add(statusHeaders);
 		
+		List<Map<String, String>> textLines = new ArrayList<Map<String, String>>();
+		HashMap<String, String> tl1 = new HashMap<String, String>();
+		tl1.put("Line", "Name1");
+		tl1.put("TextName", "Name1");
+		HashMap<String, String> tl2 = new HashMap<String, String>();
+		tl2.put("Line", "Name2");
+		tl2.put("TextName", "Name2");
+		textLines.add(tl1);
+		textLines.add(tl2);
+		salesOrdersSap.add(textLines);
+		
+		List<Map<String, String>> textHeaders = new ArrayList<Map<String, String>>();
+		HashMap<String, String> th1 = new HashMap<String, String>();
+		th1.put(VariableNames.ID, "1");
+		th1.put("TextName", "Name1");
+		HashMap<String, String> th2 = new HashMap<String, String>();
+		th2.put(VariableNames.ID, "2");
+		th2.put("TextName", "Name2");
+		textHeaders.add(th1);
+		textHeaders.add(th2);
+		salesOrdersSap.add(textHeaders);	
+				
 		return salesOrdersSap;
 	}		
 	
@@ -100,7 +134,7 @@ public class OpportunityMergeTest {
 		expectedList.add(record0);
 		expectedList.add(record1);
 		expectedList.add(record2);
-
+		
 		return expectedList;
 	}
 

@@ -6,6 +6,7 @@
 
 package org.mule.templates.transformers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -38,12 +39,12 @@ public class OpportunityMergeAggregationStrategy implements AggregationStrategy 
 		MuleEvent muleEvent = muleEventsWithoutException.get(0);
 		MuleMessage muleMessage = muleEvent.getMessage();
 		
-		List<Map<String, String>> listA = getOpportunitiesList(muleEventsWithoutException, 0);
-		List<Map<String, String>> listB = getOpportunitiesList(muleEventsWithoutException, 1);
+		List<Map<String, String>> salesForceOpportunitiesList = getSalesForceOpportunitiesList(muleEventsWithoutException, 0);
+		List<List<Map<String, String>>> sapSalesOrdersList = getSapOpportunitiesList(muleEventsWithoutException, 1);
 		
 		// events are ordered so the event index corresponds to the index of each route
 		OpportunityMerge oppMerge = new OpportunityMerge();
-		List<Map<String, String>> mergedOppList = oppMerge.mergeList(listA, listB);
+		List<Map<String, String>> mergedOppList = oppMerge.mergeList(salesForceOpportunitiesList, sapSalesOrdersList);
 		
 		muleMessage.setPayload(mergedOppList.iterator());
 		
@@ -51,7 +52,8 @@ public class OpportunityMergeAggregationStrategy implements AggregationStrategy 
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Map<String, String>> getOpportunitiesList(List<MuleEvent> events, int index) {
+	private List<Map<String, String>> getSalesForceOpportunitiesList(List<MuleEvent> events, int index) {
+		
 		Iterator<Map<String, String>> iterator;
 		if (events.get(index).getMessage().getPayload() instanceof Collection){
 			iterator = ((Collection<Map<String, String>>) events.get(index).getMessage().getPayload()).iterator();
@@ -60,6 +62,18 @@ public class OpportunityMergeAggregationStrategy implements AggregationStrategy 
 			iterator = (Iterator<Map<String, String>>) events.get(index).getMessage().getPayload();
 		
 		return Lists.newArrayList(iterator);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<List<Map<String, String>>> getSapOpportunitiesList(List<MuleEvent> events, int index) {
+					
+			List<List<Map<String, String>>> sapList = new ArrayList<>();
+			Map<String, List<Map<String, String>>> payload = (Map<String, List<Map<String, String>>>) events.get(index).getMessage().getPayload();
+			sapList.add(payload.get("StatusHeaders"));				
+			sapList.add(payload.get("TextLines"));
+			sapList.add(payload.get("TextHeaders"));
+			
+			return sapList;
 	}
 
 }
