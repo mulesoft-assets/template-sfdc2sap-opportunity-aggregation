@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jersey.repackaged.com.google.common.collect.Lists;
-
 import org.mule.templates.utils.VariableNames;
 
 /**
@@ -86,7 +84,7 @@ public class OpportunityMerge {
 		HashMap<String, Map<String, String>> soMap = new HashMap<String, Map<String, String>>();
 		
 		List<Map<String, String>> statusHeaders = salesOrdersFromSap.get(0);
-		for (Map<String, String> statusHeader: statusHeaders)
+		for (final Map<String, String> statusHeader: statusHeaders)
 			soMap.put(statusHeader.get("Id"), new HashMap<String, String>() {{						
 				put("Status", statusHeader.get("Status"));
 				put("Id", statusHeader.get("Id"));
@@ -103,7 +101,6 @@ public class OpportunityMerge {
 				item.put("Name", textNameToLine.get( textHeader.get("TextName")));
 		}
 		
-		return Lists.newArrayList(soMap.values());
+		return new ArrayList<Map<String, String>>(soMap.values());
 	}
-
 }
