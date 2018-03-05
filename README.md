@@ -32,7 +32,7 @@ For practical purposes this Template will generate the result in the format of a
 
 This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences.
 
-As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name, and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matchhing SAP. The report is then e-mailed to a configured group of e-mail addresses.
+As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name, and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matching SAP. The report is then e-mailed to a configured group of e-mail addresses.
 
 # Considerations <a name="considerations"/>
 
@@ -44,8 +44,7 @@ with SAP and Anypoint Studio.
 
 ## Disclaimer
 
-This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support,.you need to add three dependencies in the pom.xml file that begin with the following group id: 
-	**com.sap.conn.jco** or **com.sap.conn.idoc**
+This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml.
 
 
 ## SAP Considerations <a name="sapconsiderations"/>
