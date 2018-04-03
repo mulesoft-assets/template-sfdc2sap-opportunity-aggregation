@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<configuration>
+	<placeholders>
+		<placeholder id="template_name">Salesforce Opportinuty and SAP Sales Order Aggregation</placeholder>
+	</placeholders>
+	<sections>
+		<section id="use_case">
+			<![CDATA[
+I want to aggregate Opportunities from Salesforce with Sales Orders from SAP and compare them to see which can only be found in one of the two and which are in both instances.
+
+For practical purposes this Template will generate the result in the format of a CSV Report sent by e-mail.
+
+This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences.
+
+As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name, and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matching SAP. The report is then e-mailed to a configured group of e-mail addresses.
+]]>
+		</section>
+		<section id="considerations">
+			<![CDATA[
+To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made in order for all to run smoothly.
+**Failling to do so could lead to unexpected behavior of the template.**
+
+Before continue with the use of this Anypoint Template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
+with SAP and Anypoint Studio.
+
+## Disclaimer
+
+This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml.
+]]>
+		</section>
+		<section id="sap_dst">
+<![CDATA[
+SAP Sales Order name is stored in the text FORM HEADER of the SO.
+]]>
+		</section>
+		<section id="running_on_studio">
+<![CDATA[
+In order to make this Anypoint Template run on Mule Studio there are a few extra steps that needs to be made.
+Please check this Documentation Page:
+
++ [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
+]]>
+		</section>
+		<section id="running_on_cloudhub">
+<![CDATA[
+Once your app is all set and started, supposing you choose as domain name `template-sfdc2sap-opportunity-aggregation` to trigger the use case you just need to hit `http://template-sfdc2sap-opportunity-aggregation.cloudhub.io/generatereport` and report will be sent to the e-mails configured.
+]]>
+		</section>
+		<section id="running_on_standalone">
+<![CDATA[
+After this, to trigger the use case you just need to hit the local HTTP endpoint with the port you configured in your file. If this is, for instance, `9090` then you should hit: `http://localhost:9090/generatereport` and this will create a CSV report and send it to the e-mails set.
+]]>
+		</section>
+		<section id="application_configuration">
+			<![CDATA[
++ http.port `9090` 
+
+### Salesforce `Connector configuration`
++ sfdc.username `bob.dylan@sfdc`
++ sfdc.password `DylanPassword123`
++ sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
+
+### SAP Connector configuration
++ sap.jco.ashost `your.sap.address.com`
++ sap.jco.user `SAP_USER`
++ sap.jco.passwd `SAP_PASS`
++ sap.jco.sysnr `14`
++ sap.jco.client `800`
++ sap.jco.lang `EN`
+
++ sap.customer.number `0000000124`
+
+### SMTP Services configuration
++ smtp.host `smtp.gmail.com`
++ smtp.port `587`
++ smtp.user `exampleuser@gmail.com`
++ smtp.password `ExamplePassword456`
+
+### Mail details
++ mail.from `exampleuser@gmail.com`
++ mail.to `woody.guthrie@gmail.com`
++ mail.subject `SFDC Opportunities/Sales Orders Report`
++ mail.body `Report comparing Opportunities from SFDC and Sales Orders from SAP`
++ attachment.name `OrderedReport.csv`
+]]>
+		</section>
+				<section id="api_calls">
+		<![CDATA[
+Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during aggregation.
+]]>
+		</section>
+		<section id="default_endpoints_xml">
+		<![CDATA[
+This is the file where you will found the endpoint to start the aggregation. This Template has an HTTP Inbound Endpoint as the way to trigger the use case.
+$H$H# Trigger Flow
+**HTTP Inbound Endpoint** - Start Report Generation
++ `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
++ The path configured by default is `generatereport` and you are free to change for the one you prefer.
++ The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub will then route requests from your application domain URL to the endpoint.
+]]>
+		</section>
+		<section id="default_business_logic_xml">
+		<![CDATA[
+Functional aspect of the Template is implemented on this XML, directed by one flow responsible of conducting the aggregation of data, comparing records and finally formating the output, in this case being a report.
+Using Scatter-Gather component we are querying the data in different systems. After that the aggregation is implemented in DataWeave 2 script using Transform component.
+
+Aggregated results are sorted by source of existence:
+1. Opportunities only in Salesforce
+2. Opportunities (Sales Order) only in SAP
+3. Opportunities (Sales Order) in both Salesforce and SAP 
+and transformed to CSV format. Final report in CSV format is sent to email, that you configured in mule.*.properties file.
+
+]]>
+		</section>
+	</sections>
+</configuration>
