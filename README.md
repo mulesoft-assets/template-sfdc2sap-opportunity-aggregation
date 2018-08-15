@@ -1,5 +1,5 @@
 
-# Anypoint Template: Salesforce Opportinuty and SAP Sales Order Aggregation
+# Anypoint Template: Salesforce Opportunity and SAP Sales Order Aggregation
 
 + [License Agreement](#licenseagreement)
 + [Use Case](#usecase)
@@ -104,7 +104,7 @@ column='486'
 
 
 # Run it! <a name="runit"/>
-Simple steps to get Salesforce Opportinuty and SAP Sales Order Aggregation running.
+Simple steps to get Salesforce Opportunity and SAP Sales Order Aggregation running.
 
 
 ## Running on premise <a name="runonopremise"/>
