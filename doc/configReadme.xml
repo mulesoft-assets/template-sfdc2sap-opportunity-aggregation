@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <configuration>
 	<placeholders>
-		<placeholder id="template_name">Salesforce Opportinuty and SAP Sales Order Aggregation</placeholder>
+		<placeholder id="template_name">Salesforce Opportunity and SAP Sales Order Aggregation</placeholder>
 	</placeholders>
 	<sections>
 		<section id="use_case">
