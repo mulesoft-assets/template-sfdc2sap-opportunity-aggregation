@@ -9,7 +9,7 @@
     <artifactId>template-sfdc2sap-opportunity-aggregation</artifactId>
     <version>2.1.1-SNAPSHOT</version>
     <packaging>mule-application</packaging>
-    <name>template-sfdc2sap-opportunuty-aggregation</name>
+    <name>template-sfdc2sap-opportunity-aggregation</name>
     <build>
         <plugins>
             <plugin>
