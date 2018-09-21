@@ -1,115 +1,94 @@
 <?xml version="1.0"?>
 <configuration>
 	<placeholders>
-		<placeholder id="template_name">Salesforce Opportunity and SAP Sales Order Aggregation</placeholder>
+		<placeholder id="template_name">MS Dynamics to Salesforce account Broadcast</placeholder>
 	</placeholders>
 	<sections>
 		<section id="use_case">
-			<![CDATA[
-I want to aggregate Opportunities from Salesforce with Sales Orders from SAP and compare them to see which can only be found in one of the two and which are in both instances.
+This template sets an online migration of accounts from MS Dynamics to Salesforce.
+Every time there is a new account or a change in an already existing one, the integration polls for changes from the MS Dynamics source instance and it is responsible for updating the account in Salesforce target instance.
 
-For practical purposes this Template will generate the result in the format of a CSV Report sent by e-mail.
+Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 
-This Template should serve as a foundation for extracting data from two systems, aggregating data, comparing values of fields for the objects, and generating a report on the differences.
+As implemented, this template leverages the batch module.
+The batch job is divided in *Process* and *On Complete* stages.
+The integration is triggered by a Scheduler defined in the flow that is going to trigger the application, querying newest MS Dynamics updates or creations matching a filter criteria and executing the batch job.
+During the *Process* stage, each MS Dynamics account is filtered depending on if it has an existing matching account in Salesforce.
+The last step of the *Process* stage groups the accounts and creates or updates them in Salesforce.
 
-As implemented, it gets Opportunities from Salesforce and Sales Orders from SAP, compares by the name, and generates a CSV file which shows Opportunity in Salesforce, Sales Order in SAP, and opportunities from Salesforce and matching SAP. The report is then e-mailed to a configured group of e-mail addresses.
-]]>
-		</section>
+Finally during the *On Complete* stage, the template logs output statistics data to the console.
+		</section>		
 		<section id="considerations">
-			<![CDATA[
-To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made in order for all to run smoothly.
-**Failling to do so could lead to unexpected behavior of the template.**
-
-Before continue with the use of this Anypoint Template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
-with SAP and Anypoint Studio.
-
-## Disclaimer
-
-This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml.
-]]>
-		</section>
-		<section id="sap_dst">
 <![CDATA[
-SAP Sales Order name is stored in the text FORM HEADER of the SO.
-]]>
-		</section>
-		<section id="running_on_studio">
-<![CDATA[
-In order to make this Anypoint Template run on Mule Studio there are a few extra steps that needs to be made.
-Please check this Documentation Page:
+To make this template run, there are certain preconditions that must be considered. All of them deal with the preparations in both source and destination systems, that must be made in order for all to run smoothly. Failing to do so could lead to unexpected behavior of the template.
 
-+ [Enabling Your Studio Project for SAP](https://docs.mulesoft.com/connectors/sap-connector#configuring-the-connector-in-studio-7)
+The business logic supports custom mapping for the industry attribute of accounts:
+
+1. Agriculture and Non-petrol Natural Resource Extraction
+2. Consulting
+3. Doctor's Offices and Clinics
+4. Entertainment Retail 
+5. Financial
+ 
+**Note:** You need to install the Java Cryptography Extensions to be able to connect to MS Dynamics. Choose a relevant version according to your Java installation.
+ 
 ]]>
-		</section>
-		<section id="running_on_cloudhub">
-<![CDATA[
-Once your app is all set and started, supposing you choose as domain name `template-sfdc2sap-opportunity-aggregation` to trigger the use case you just need to hit `http://template-sfdc2sap-opportunity-aggregation.cloudhub.io/generatereport` and report will be sent to the e-mails configured.
-]]>
-		</section>
-		<section id="running_on_standalone">
-<![CDATA[
-After this, to trigger the use case you just need to hit the local HTTP endpoint with the port you configured in your file. If this is, for instance, `9090` then you should hit: `http://localhost:9090/generatereport` and this will create a CSV report and send it to the e-mails set.
-]]>
-		</section>
+		</section>		
 		<section id="application_configuration">
-			<![CDATA[
-+ http.port `9090` 
+		<![CDATA[
+**Batch Aggregator Configuration**
++ page.size `200`
 
-### Salesforce `Connector configuration`
-+ sfdc.username `bob.dylan@sfdc`
-+ sfdc.password `DylanPassword123`
-+ sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
+**Scheduler Configuration**
++ scheduler.frequency `10000`
++ scheduler.start.delay `100`
 
-### SAP Connector configuration
-+ sap.jco.ashost `your.sap.address.com`
-+ sap.jco.user `SAP_USER`
-+ sap.jco.passwd `SAP_PASS`
-+ sap.jco.sysnr `14`
-+ sap.jco.client `800`
-+ sap.jco.lang `EN`
+**Watermarking default last query timestamp for example 2018-12-13T03:00:59Z**
++ watermark.default.expression `2018-04-01T19:40:27Z`
 
-+ sap.customer.number `0000000124`
+**MS Dynamics Connector Configuration**
++ msdyn.user `msdyn_user`
++ msdyn.password `msdyn_password`
++ msdyn.url `https://{your MS Dynamics URL}`
++ msdyn.retries `5`
 
-### SMTP Services configuration
-+ smtp.host `smtp.gmail.com`
-+ smtp.port `587`
-+ smtp.user `exampleuser@gmail.com`
-+ smtp.password `ExamplePassword456`
+**Salesforce Connector Configuration**
++ sfdc.username `joan.baez@orgb`
++ sfdc.password `JoanBaez456`
++ sfdc.securityToken `ces56arl7apQs56XTddf34X`
 
-### Mail details
-+ mail.from `exampleuser@gmail.com`
-+ mail.to `woody.guthrie@gmail.com`
-+ mail.subject `SFDC Opportunities/Sales Orders Report`
-+ mail.body `Report comparing Opportunities from SFDC and Sales Orders from SAP`
-+ attachment.name `OrderedReport.csv`
 ]]>
 		</section>
-				<section id="api_calls">
+		<section id="api_calls">
 		<![CDATA[
-Salesforce imposes limits on the number of API Calls that can be made. However, we make API call to Salesforce only once during aggregation.
-]]>
-		</section>
-		<section id="default_endpoints_xml">
-		<![CDATA[
-This is the file where you will found the endpoint to start the aggregation. This Template has an HTTP Inbound Endpoint as the way to trigger the use case.
-$H$H# Trigger Flow
-**HTTP Inbound Endpoint** - Start Report Generation
-+ `${http.port}` is set as a property to be defined either on a property file or in CloudHub environment variables.
-+ The path configured by default is `generatereport` and you are free to change for the one you prefer.
-+ The host name for all endpoints in your CloudHub configuration should be defined as `localhost`. CloudHub will then route requests from your application domain URL to the endpoint.
+Salesforce imposes limits on the number of API calls that can be made. Therefore calculating this amount is important. The template calls to the API can be calculated using the formula:
+
+***1 + X + X / ${page.size}***
+
+***X*** is the number of accounts to be synchronized on each run. 
+
+Divide by ***${page.size}*** because by default, accounts are gathered in groups of ${page.size} for each upsert API call in the commit step.	
+
+For instance if 10 records are fetched from an origin instance, then 12 API calls are made (1 + 10 + 1).
 ]]>
 		</section>
 		<section id="default_business_logic_xml">
 		<![CDATA[
-Functional aspect of the Template is implemented on this XML, directed by one flow responsible of conducting the aggregation of data, comparing records and finally formating the output, in this case being a report.
-Using Scatter-Gather component we are querying the data in different systems. After that the aggregation is implemented in DataWeave 2 script using Transform component.
+This file holds the functional aspect of the template, directed by a flow responsible of conducting the business logic.
 
-Aggregated results are sorted by source of existence:
-1. Opportunities only in Salesforce
-2. Opportunities (Sales Order) only in SAP
-3. Opportunities (Sales Order) in both Salesforce and SAP 
-and transformed to CSV format. Final report in CSV format is sent to email, that you configured in mule.*.properties file.
+The functional aspect of this template is implemented in this XML, directed by a flow that polls for MS Dynamics creations and updates.
 
+Several message processors constitute four high level actions that fully implement the logic of this template:
+
+1. The template queries for all the existing accounts from MS Dynamics modified after the watermark.
+2. During the *Process* stage, each account is filtered depending on if it has an existing matching account in Salesforce.
+3. The last step of the *Process* stage, groups the accounts and creates or updates them in Salesforce.
+4. During the *On Complete* stage, the template logs output statistics data into the console.
+]]>
+		</section>
+		<section id="default_endpoints_xml">
+		<![CDATA[
+This file is formed by a flow containing the Scheduler that periodically queries MS Dynamics for updated or created accounts that meet the defined criteria in the query. Then it executes the batch job process that the query results follow.
 ]]>
 		</section>
 	</sections>
