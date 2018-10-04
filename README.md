@@ -7,6 +7,8 @@ Opportunities are sorted such that the opportunities only in Salesforce appear f
 
 Aggregation templates can be easily extended to return a multitude of data in mobile friendly form to power your mobile initiatives by providing easily consumable data structures from otherwise complex backend systems.
 
+![e4c3b69d-9602-43ee-a4b2-33889922e4e1-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/e4c3b69d-9602-43ee-a4b2-33889922e4e1-image.png)
+
 ### License Agreement
 
 This template is subject to the conditions of the [MuleSoft License Agreement](https://s3.amazonaws.com/templates-examples/AnypointTemplateLicense.pdf "MuleSoft License Agreement").
