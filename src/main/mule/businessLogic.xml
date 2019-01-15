@@ -21,82 +21,8 @@ http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/
 				</salesforce:query>
 			</route>
 			<route >
-				<ee:transform doc:name="Transform to ISA_SALESDOCUMENTS_SEARCH_NEW" doc:id="d2ca1c82-65c1-489a-8eb8-0b8be1d56c94" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
----
-{
-  "ISA_SALESDOCUMENTS_SEARCH_NEW": {
-    "import": {
-      "CUSTOMER_NUMBER": "${sap.customer.number}"
-    }
-  }
-}]]></ee:set-payload>
-					</ee:message>
-				</ee:transform>
-				<sap:execute-synchronous-remote-function-call key="ISA_SALESDOCUMENTS_SEARCH_NEW" doc:name="Execute SA_SALESDOCUMENTS_SEARCH_NEW operation" doc:id="809ec67d-cb57-42d4-a8a6-feac4e81a5d4" config-ref="SAP_Outbound">
-				</sap:execute-synchronous-remote-function-call>
-				<ee:transform doc:name="Transform ISA_SALESDOCUMENTS_SEARCH_NEW to BAPI_ISAORDER_GETDETAILEDLIST" doc:id="5805e619-b9bc-4bf2-afda-748104358033" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/xml
----
-{
-	"BAPI_ISAORDER_GETDETAILEDLIST": {
-		"import": {
-			"I_BAPI_VIEW": {
-				"STATUS_H": "X",
-				"TEXT": "X"
-			}
-		},
-		"tables": {			
-			"SALES_DOCUMENTS": {
-				(payload."ISA_SALESDOCUMENTS_SEARCH_NEW".tables."STATUS_DATA".*row map {
-					"row": {
-						"VBELN": $.VBELN
-					}
-				})				
-			}
-		}
-	}
-}]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<sap:execute-synchronous-remote-function-call doc:name="query all sales from SAP" doc:id="f2cc9392-f6b6-4131-86f0-6683820282c3" config-ref="SAP_Outbound" key="BAPI_ISAORDER_GETDETAILEDLIST">
-				</sap:execute-synchronous-remote-function-call>
-				<ee:transform doc:name="convert SAP response to Salesforce Opportunity" doc:id="02f5401c-e5c4-4997-8400-62ba8fcd98c5" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
-output application/java
-import mergeWith from dw::core::Objects
-var statusHeaders = payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_STATUSHEADERS_OUT".*row map {
-		Status: $."ISA_DOC_STATUS",
-		Id: $."SD_DOC"
-}
-var textHeaders = payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTHEADERS_OUT".*row map {
-		Id : $.SD_DOC,
-		TextName : $.TEXT_NAME
-}
-var textLines = payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTLINES_OUT".*row map {
-		Line : $.LINE,
-		TextName : $.TEXT_NAME
-}
-var mergedHeaders = statusHeaders map ((item) -> item mergeWith ((textHeaders filter ($.Id == item.Id))[0] 
-                )
-            ) distinctBy $.Id
-var mergedText = mergedHeaders map ((item) -> item mergeWith ((textLines filter ($.TextName == item.TextName))[0] 
-                )
-            ) distinctBy $.TextName
----
-mergedText map {
-    Name: $.Line,
-    Id: $.Id,
-    Status: $.Status
-
-}]]></ee:set-payload>
-					</ee:message>
-				</ee:transform>	
+				<flow-ref doc:name="Call querySapSubFlow" doc:id="4238bb38-90b4-480d-bab3-bf74af69ce65" name="querySapSubFlow"/>
+				
 			</route>
 		</scatter-gather>
 		<ee:transform doc:name="Transform Collection to CSV" doc:id="7668acb0-da18-4df8-92a8-0bc58c5ad88b" >
@@ -159,6 +85,84 @@ sortBySourceExistence(mergedOpportunities) map (opportunity) -> {
 		
 </email:send>
 </flow>
+	<sub-flow name="querySapSubFlow" doc:id="cfac8a43-76d9-476b-b46a-cafebe48e517" >
+		<ee:transform doc:name="Transform to ISA_SALESDOCUMENTS_SEARCH_NEW" doc:id="0691fcf4-6d5e-4fbc-bd3b-e5904262ccf9" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+  "ISA_SALESDOCUMENTS_SEARCH_NEW": {
+    "import": {
+      "CUSTOMER_NUMBER": "${sap.customer.number}"
+    }
+  }
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<sap:execute-synchronous-remote-function-call key="ISA_SALESDOCUMENTS_SEARCH_NEW" doc:name="Execute SA_SALESDOCUMENTS_SEARCH_NEW operation" doc:id="00629566-4cd3-40d8-a3bf-0480cc6df7ed" config-ref="SAP_Outbound">
+				</sap:execute-synchronous-remote-function-call>
+				<ee:transform doc:name="Transform ISA_SALESDOCUMENTS_SEARCH_NEW to BAPI_ISAORDER_GETDETAILEDLIST" doc:id="ff017cce-46a5-4107-a1cb-2b956dc79790" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	"BAPI_ISAORDER_GETDETAILEDLIST": {
+		"import": {
+			"I_BAPI_VIEW": {
+				"STATUS_H": "X",
+				"TEXT": "X"
+			}
+		},
+		"tables": {			
+			"SALES_DOCUMENTS": {
+				(payload."ISA_SALESDOCUMENTS_SEARCH_NEW".tables."STATUS_DATA".*row map {
+					"row": {
+						"VBELN": $.VBELN
+					}
+				})				
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<sap:execute-synchronous-remote-function-call doc:name="query all sales from SAP" doc:id="a25d53be-2cb4-4c7d-a694-3ac6c22d1ed9" config-ref="SAP_Outbound" key="BAPI_ISAORDER_GETDETAILEDLIST">
+				</sap:execute-synchronous-remote-function-call>
+				<ee:transform doc:name="convert SAP response to Salesforce Opportunity" doc:id="5071ab8e-8287-446a-a3c6-d636fbaaad59" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+import mergeWith from dw::core::Objects
+var statusHeaders = payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_STATUSHEADERS_OUT".*row map {
+		Status: $."ISA_DOC_STATUS",
+		Id: $."SD_DOC"
+}
+var textHeaders = payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTHEADERS_OUT".*row map {
+		Id : $.SD_DOC,
+		TextName : $.TEXT_NAME
+}
+var textLines = payload."BAPI_ISAORDER_GETDETAILEDLIST".tables."ORDER_TEXTLINES_OUT".*row map {
+		Line : $.LINE,
+		TextName : $.TEXT_NAME
+}
+var mergedHeaders = statusHeaders map ((item) -> item mergeWith ((textHeaders filter ($.Id == item.Id))[0] 
+                )
+            ) distinctBy $.Id
+var mergedText = mergedHeaders map ((item) -> item mergeWith ((textLines filter ($.TextName == item.TextName))[0] 
+                )
+            ) distinctBy $.TextName
+---
+mergedText map {
+    Name: $.Line,
+    Id: $.Id,
+    Status: $.Status
+
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>	
+	</sub-flow>
 	<flow name="mainFlow" doc:id="c9d80d54-ed92-4dc2-872f-629f3c0b678f" >
 	<flow-ref doc:name="Call businessLogicFlow" doc:id="7e1b3d52-2256-4af8-b0c5-b8fbee3d1b66" name="businessLogicFlow"/>
 	<error-handler >
