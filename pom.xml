@@ -9,7 +9,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>template-sfdc2sap-opportunity-aggregation</artifactId>
-    <version>2.1.2-SNAPSHOT</version>
+    <version>2.1.2</version>
     <packaging>mule-application</packaging>
     <name>template-sfdc2sap-opportunity-aggregation</name>
     
@@ -102,4 +102,4 @@
             <layout>default</layout>
         </repository>
     </repositories>
-<scm><connection>scm:git:git@github.com:mulesoft/template-sfdc2sap-opportunity-aggregation.git</connection><developerConnection>scm:git:git@github.com:mulesoft/template-sfdc2sap-opportunity-aggregation.git</developerConnection><url>https://github.com/mulesoft/template-sfdc2sap-opportunity-aggregation</url><tag>HEAD</tag></scm></project>
+<scm><connection>scm:git:git@github.com:mulesoft/template-sfdc2sap-opportunity-aggregation.git</connection><developerConnection>scm:git:git@github.com:mulesoft/template-sfdc2sap-opportunity-aggregation.git</developerConnection><url>https://github.com/mulesoft/template-sfdc2sap-opportunity-aggregation</url><tag>v2.1.2</tag></scm></project>
